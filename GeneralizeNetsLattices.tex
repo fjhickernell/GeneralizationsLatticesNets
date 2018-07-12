@@ -12,6 +12,7 @@
 %% Useful packages
 \usepackage{amsmath,booktabs}
 \usepackage{graphicx}
+\newtheorem{lemma}{Lemma}
 
 \input{FJHDef.tex}
 
@@ -28,9 +29,16 @@ Define the $2$-adic map from the non-negative integers to the unit interval:
 \begin{equation}
 \phi(i) = \phi(i_0 + 2 i_1 + 4 i_2 + \cdots) = \frac{i_0}{2} + \frac{i_1}{4} + \frac{i_2} {8} + \cdots, \qquad i \in \natzero
 \end{equation}
-We will define a group labeled by $\natzero$, and then map these points back to the unit interval.
+We will define a group labeled by $\natzero$, and then map these points back to the unit interval via $\phi$.
 
-The addition operator, $\oplus$, is defined iteratively. For all $m \in \natzero$, let $\ci_m = \{0, \ldots, 2^m -1\}$, $\cj_m = \{2^m, \dots, 2^{m+1}\}$, and let $\pi_m:\ci_m \to \cj_m$ be a bijective map.  Also, let $0 \oplus 0 = 0$.  Then assuming that $\ci_m$ is already an Abelian group under $\oplus$, which it is for $m=0$, the definition of $\oplus$ for $\ci_m$ is extended to $\ci_{m+1} = \ci_m \cup \cj_m$ as follows:
+The addition operator, $\oplus$, is defined iteratively. For all $m \in \natzero$, let 
+\begin{align*}
+    \ci_m & = \{0, \ldots, 2^m -1\}, \\
+    \cj_m & = \{2^m, \dots, 2^{m+1}-1 \}, \\
+    \pi:\naturals \to \naturals & \text{ be a bijective map satisfying } \pi(\cj_m) = \cj_m \quad \forall m \in \natzero, \\
+    \pi_m(i) & = \pi(i+2^m) \quad \forall i \in \ci_m, \qquad \pi_m:\ci_m \to \cj_m.
+\end{align*}
+Also, let $0 \oplus 0 = 0$.  Then assuming that $\ci_m$ is already an Abelian group under $\oplus$, which it is for $m=0$, the definition of $\oplus$ for $\ci_m$ is extended to $\ci_{m+1} = \ci_m \cup \cj_m$ as follows:
 \begin{subequations} \label{oplusDef}
 \begin{gather}
     \label{oplusDefA}
@@ -49,9 +57,60 @@ since
 \[
 j \oplus \pi_m\bigl (\pi_m^{-1}(2^m) \ominus \pi_m^{-1}(j)  \bigr ) = \pi_m^{-1}( j) \oplus \bigl ( \pi_m^{-1}(2^m) \ominus \pi_m^{-1}(j) \bigr ) \ominus \pi_m^{-1}(2^m) = 0
 \]
-by  \eqref{oplusDefB} and the associative property on $\ci_m$.  
+by  \eqref{oplusDefB} and the associative property on $\ci_m$.  The associative property for $\ci_{m+1}$ is proven in Lemma \ref{lem:assocProp}.
 
-All that remains is to check the associative property when at least one of the elements is in $\cj_m$.  For all $i_1, i_2 \in \ci_m$ and $j_1, j_2, j_3 \in \cj_m$, 
+
+
+Under definition \eqref{oplusDefB} it follows that 
+\begin{equation*}
+    j = \pi_m(j \oplus 2^m),  \qquad \forall j \in \cj_m.
+\end{equation*}
+Thus, if $\oplus$ is defined first, then $\pi_m$ can be inferred from the equation above.
+
+
+
+\section{Examples}
+
+This first example corresponds to $i \oplus j$ defined by digit-wise addition:
+\[
+\begin{array}{ccc|cccccccc}
+&& \multicolumn{9}{c}{i \oplus j} \\
+ \pi(i) & \phi(i) & \multicolumn{1}{c}{i\backslash j} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ 
+    \toprule
+      & 0 & 0 & 0\\
+    1 & 0.5 & 1 & 1 & 0 \\
+    2 & 0.25  & 2 & 2 & 3 & 0\\
+    3 & 0.75  & 3 & 3 & 2 & 1 & 0\\
+    4 & 0.125 & 4 & 4 & 5 & 6 & 7 & 0\\
+    5 & 0.625 & 5 & 5 & 4 & 7 & 6 & 1 & 0\\
+    6 & 0.375 & 6 & 6 & 7 & 4 & 5 & 2 & 3 & 0\\
+    7 & 0.875 & 7 & 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0\\
+\end{array}
+\]
+A second example corresponds to $\phi(i \oplus j) = \phi(i) + \phi(j) \bmod 1$:
+\[
+\begin{array}{ccc|ccccccccc}
+&& \multicolumn{9}{c}{i \oplus j} \\
+ \pi(i) & \phi(i) & \multicolumn{1}{c}{i\backslash j} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ 
+    \toprule
+      & 0 &     0 & 0\\
+    1 & 0.5   & 1 & 1 & 0 \\
+    3 & 0.25  & 2 & 2 & 3 & 1\\
+    2 & 0.75  & 3 & 3 & 2 & 0 & 1\\
+    7 & 0.125 & 4 & 4 & 5 & 6 & 7 & 2\\
+    6 & 0.625 & 5 & 5 & 4 & 7 & 6 & 3 & 2\\
+    4 & 0.375 & 6 & 6 & 7 & 5 & 4 & 1 & 0 & 3\\
+    5 & 0.875 & 7 & 7 & 6 & 4 & 5 & 0 & 1 & 2 & 3\\
+\end{array}
+\]
+
+
+\section{Appendix}
+\begin{lemma} \label{lem:assocProp}
+If $oplus$ is defined iteratively as in \eqref{oplusDef}, then the associative property holds for $\ci_{m+1}$, provided that it holds for $\ci_m$.
+\end{lemma}  
+\begin{proof}
+All that is needed is to check the associative property when at least one of the elements is in $\cj_m = \ci_{m+1} \setminus \ci_m$.  For all $i_1, i_2 \in \ci_m$ and $j_1, j_2, j_3 \in \cj_m$, 
 \begin{align*}
     (i_1 \oplus i_2) \oplus j_3 & = \pi_m((i_1 \oplus i_2) \oplus \pi_m^{-1}(j_3)) && \text{by } \eqref{oplusDefA} \\
     & = \pi_m(i_1 \oplus (i_2 \oplus \pi_m^{-1}(j_3))) && \text{by the associative property on } \ci_m \\
@@ -71,48 +130,6 @@ All that remains is to check the associative property when at least one of the e
     & = j_1 \oplus (j_2 \oplus j_3) && \text{by } \eqref{oplusDefB}.
 \end{align*}
 Thus, the associative property holds.
-
-Under definition \eqref{oplusDefB} it follows that 
-\begin{equation*}
-    j = \pi_m(j \oplus 2^m),  \qquad \forall j \in \cj_m.
-\end{equation*}
-Thus, if $\oplus$ is defined first, then $\pi_m$ can be inferred from the equation above.
-
-
-
-\section{Examples}
-
-This first example corresponds to $i \oplus j$ defined by digit-wise addition:
-\[
-\begin{array}{ccccc|cccccccc}
-&&&& \multicolumn{9}{c}{i \oplus j} \\
-\pi_2(i) & \pi_1(i) &  \pi_0(i) & \phi(i) & \multicolumn{1}{c}{i\backslash j} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ 
-    \toprule
-    4 & 2 & 1 & 0 & 0 & 0\\
-    5 & 3 & & 0.5 & 1 & 1 & 0 \\
-    6 & & & 0.25  & 2 & 2 & 3 & 0\\
-    7 & & & 0.75  & 3 & 3 & 2 & 1 & 0\\
-      & & & 0.125 & 4 & 4 & 5 & 6 & 7 & 0\\
-      & & & 0.625 & 5 & 5 & 4 & 7 & 6 & 1 & 0\\
-      & & & 0.375 & 6 & 6 & 7 & 4 & 5 & 2 & 3 & 0\\
-      & & & 0.875 & 7 & 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0\\
-\end{array}
-\]
-A second example corresponds to $\phi(i \oplus j) = \phi(i) + \phi(j) \bmod 1$:
-\[
-\begin{array}{ccccc|ccccccccc}
-&&&& \multicolumn{9}{c}{i \oplus j} \\
-\pi_2(i) & \pi_1(i) &  \pi_0(i) & \phi(i) & \multicolumn{1}{c}{i\backslash j} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ 
-    \toprule
-    7 & 3 & 1 & 0 & 0& 0\\
-    6 & 2 & & 0.5 & 1 & 1 & 0 \\
-    4 & & & 0.25  & 2 & 2 & 3 & 1\\
-    5 & & & 0.75  & 3 & 3 & 2 & 0 & 1\\
-      & & & 0.125 & 4 & 4 & 5 & 6 & 7 & 2\\
-      & & & 0.625 & 5 & 5 & 4 & 7 & 6 & 3 & 2\\
-      & & & 0.375 & 6 & 6 & 7 & 5 & 4 & 1 & 0 & 3\\
-      & & & 0.875 & 7 & 7 & 6 & 4 & 5 & 0 & 1 & 2 & 3\\
-\end{array}
-\]
+\end{proof}
 
 \end{document}
