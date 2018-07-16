@@ -23,20 +23,110 @@
 \begin{document}
 \maketitle
 
-\section{Basics}
+\section{Introduction}
 
+\section{Overview}
+
+\subsection{Cubature Rules}
 Define the $2$-adic map from the non-negative integers to the unit interval:
-\begin{equation}
-\phi(i) = \phi(i_0 + 2 i_1 + 4 i_2 + \cdots) = \frac{i_0}{2} + \frac{i_1}{4} + \frac{i_2} {8} + \cdots, \qquad i \in \natzero
+\begin{equation} \label{phiDef}
+\phi(i) = \phi(i_0 + 2 i_1 + 4 i_2 + \cdots) = \frac{i_0}{2} + \frac{i_1}{4} + \frac{i_2} {8} + \cdots, \qquad \forall i = i_0 + 2 i_1 + \cdots \in \natzero.
 \end{equation}
-We will define a group labeled by $\natzero$, and then map these points back to the unit interval via $\phi$.
+Then $\cx:= \phi(\natzero)$ is the set of all binary fractions in $[0,1)$.
 
-The addition operator, $\oplus$, is defined iteratively. For all $m \in \natzero$, let 
+
+In Section \ref{sec:Group} we define an Abelian group $(\natzero,\oplus)$ and with subgroups
+\begin{equation} \label{ImDef}
+    (\ci_m,\oplus), \quad \ci_m := \{0, \ldots, 2^m -1\}, \qquad \forall m \in \natzero.
+\end{equation}
+See ??? for examples of $\oplus$ defined on $\ci_3$.  The definition of  $(\natzero,\oplus)$ is  extended naturally to  $(\natzero^d, \oplus)$ by defining $\oplus$ on vectors to act component-wise.  The map $\phi$ is  extended to vector inputs as $\vphi(\vi) := \vphi(i_1, \ldots, i_d) := (\phi(i_1), \ldots, \phi(i_d))$, and $\vphi(\natzero^d) = \cx^d$. 
+
+Our goal is to define subgroups, $(\cp,\oplus)$, of $(\natzero^d, \oplus)$ that yield good cubature rules of the form
+\begin{equation*}
+    \int_{[0,1)^d} f(\vx) \, \dif \vx \approx \frac 1{\abs{\cp}} \sum_{\vi \in \cp} f(\vphi(\vi \oplus \vj)),
+\end{equation*}
+where $\vj$ is some fixed shift.  The aim is to develop quality criteria for $\cp$ that bound the cubature error, and to show that these quality criteria decay at favorable rates as $\abs{\cp} \to \infty$.
+
+\subsection{Worst-Case Cubature Error}
+The error analysis proceeds by identifying functions, $\psi_{\vk}:\natzero^d \to \reals$ for all $\vk \in \ck$ that are the characters of the group $(\natzero^d, \oplus)$, i.e., 
+\begin{equation} \label{charDef}
+    \psi_{\vk}(\vi \oplus \vj) = \psi_{\vk}(\vi) \psi_{\vk}(\vj), \quad \abs{\psi_{\vk}(\vi)} = 1, \qquad \forall \vi, \vj \in \natzero^d.
+\end{equation}
+By convention, $\psi_{\vzero} = 1$.  Let $\Psi_{\vk}:[0,1)^d \to \reals$ be defined by 
+\begin{equation} \label{PsiDef}
+    \Psi_{\vk}(\vx) = \lim_{\ell \to \infty}  \psi_{\vk}(\vphi^{-1}(\vx_\ell)), 
+\end{equation}
+where $\vx_\ell \in \cx^d$ is the proper binary expansion of $\vx$ truncated at $\ell$ digits in each coordinate.  This implies that $\Psi_{\vk}$ can only have discontinuities at points in $\cx$.  Note that $\Psi_{\vzero} = 1$.
+
+The space of integrands is defined to be 
+\begin{equation} \label{FSpaceDef}
+    \cf : = \left \{ f = \sum_{\vk} \hf_{\vk} \Psi_{\vk} : \norm[\cf]{f}^2 := \sum_{\vk} \abs{\frac{\hf_{\vk}}{w_{\vk}}}^2 < \infty   \right \}.
+\end{equation}
+Here the weights, $w_{\vk}$, are chosen to satisfy
+\begin{equation}
+    \sum_{\vk} \abs{w_{\vk} \Psi_{\vk}(\vx)}^2 <  \infty \qquad \forall \vx \in [0,1)^d,
+\end{equation}
+thus ensuring that function evaluation at any particular point is a bounded, linear functional for $\cf$.
+
+It is shown that $\int_{[0,1)^d} \Psi_{\vk}(\vx) \, \dif \vx = \delta_{\vk,\vzero}$.  Employing the series expression for the integrand implies that 
+\begin{align}
+\label{errA}
+    \int_{[0,1)^d} f(\vx) \, \dif \vx - \frac 1{\abs{\cp}} \sum_{\vi \in \cp} f(\vphi(\vi \oplus \vj)) 
+    & = - \sum_{\vk \in \ck} \hf_{\vk} \times \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \Psi_{\vk}(\vphi(\vi \oplus \vj))   \qquad \text{by }\eqref{FSpaceDef} \\
+    \nonumber
+    & = - \sum_{\vk \in \ck} \hf_{\vk}  \times \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \psi_{\vk}(\vi \oplus \vj) 
+    \qquad \text{by }\eqref{PsiDef}\\
+    \nonumber 
+    & = - \sum_{\vk \in \ck} \hf_{\vk} \psi_{\vk}(\vj) \times  \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \psi_{\vk}(\vi) \qquad \text{by }  \eqref{charDef} .
+\end{align}
+The last term on the right can take on one of two values.  The subgroup structure of $\cp$ and \eqref{charDef} implies that 
+\begin{equation*}
+    \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \psi_{\vk}(\vi) 
+    = \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \psi_{\vk}(\vi \oplus \vi') 
+ = \psi_{\vk}(\vi') \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \psi_{\vk}(\vi) \qquad  \forall \vi' \in \cp.
+\end{equation*}
+and so
+\begin{equation*}
+    \left [ 1 - \psi_{\vk}(\vi') \right ] \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \psi_{\vk}(\vi) 
+    = 0 \qquad  \forall \vi' \in \cp.
+\end{equation*}
+Define the \emph{dual set} of the subgroup $\cp$ by 
+\begin{equation}
+    \cp^{\perp} : = \{\vk \in \ck : \psi_{\vk}(\vi) = 1 \ \forall \vi \in \cp \}.
+\end{equation}
+Then the sum at the end of \eqref{errA} is either one or zero, depending on whether or not $\vk$ is in the dual set:
+\begin{equation}
+    \frac 1{\abs{\cp}} \sum_{\vi \in \cp} \psi_{\vk}(\vi) = 
+    \begin{cases} 1, & \vk \in \cp^{\perp}, \\
+    0, & \vk \notin \cp^{\perp}.
+    \end{cases}
+\end{equation}
+Furthermore,  from  \eqref{charDef} and \eqref{errA} the cubature error is bounded by
+\begin{equation}
+    \abs{\int_{[0,1)^d} f(\vx) \, \dif \vx - \frac 1{\abs{\cp}} \sum_{\vi \in \cp} f(\vphi(\vi \oplus \vj))}  
+    \le \sum_{\vk \in \cp^\perp} \abs{\hf_{\vk}} \le \norm[2]{\bigl(w_{\vk} \bigr)_{\vk \in \cp^\perp} } \norm[\cf]{f}
+\end{equation}
+
+The quantity $\norm[2]{\bigl(w_{\vk} \bigr)_{\vk \in \cp^\perp} }$ corresponds to the worst-case error for the cubature rule.
+
+\subsection{Randomized Cubature Error}
+The cubature rule may be randomized by applying some randomization to the set $\cp$.  We consider randomizations of the form $\veta : \natzero^d \to \natzero^d$, which satisfy 
+\begin{equation}
+    \veta(\vi) \sim \cu(\natzero^d).
+\end{equation}
+This implies that 
+
+
+
+\section{The Group Structure} \label{sec:Group}
+The addition operator, $\oplus$, is defined iteratively. For all $m \in \natzero$, define 
 \begin{align*}
-    \ci_m & = \{0, \ldots, 2^m -1\}, \\
-    \cj_m & = \{2^m, \dots, 2^{m+1}-1 \}, \\
-    \pi:\naturals \to \naturals & \text{ be a bijective map satisfying } \pi(\cj_m) = \cj_m \quad \forall m \in \natzero, \\
-    \pi_m(i) & = \pi(i+2^m) \quad \forall i \in \ci_m, \qquad \pi_m:\ci_m \to \cj_m.
+    \cj_m & := \{2^m, \dots, 2^{m+1}-1 \} = \ci_{m+1} \setminus \ci_m, \\
+    \pi & : \naturals \to \naturals \text{ to be be a bijective map satisfying } \pi(\cj_m) = \cj_m \quad \forall m \in \natzero, \\
+    \pi_m & : \begin{cases} 
+    \ci_m \to \cj_m, \\
+    i \mapsto \pi(i+2^m).
+    \end{cases}
 \end{align*}
 Also, let $0 \oplus 0 = 0$.  Then assuming that $\ci_m$ is already an Abelian group under $\oplus$, which it is for $m=0$, the definition of $\oplus$ for $\ci_m$ is extended to $\ci_{m+1} = \ci_m \cup \cj_m$ as follows:
 \begin{subequations} \label{oplusDef}
