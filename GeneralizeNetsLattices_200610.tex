@@ -1,0 +1,194 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{latexsym,amsfonts,amsmath,graphics}
+\usepackage{epsfig}
+\usepackage[notref,notcite]{showkeys}
+%\usepackage[active]{srcltx}
+\usepackage{enumitem}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\setlength{\textheight}{24cm} \setlength{\textwidth}{16cm}
+\setlength{\hoffset}{-1.3cm} \setlength{\voffset}{-1.8cm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{definition}{Definition}
+\newtheorem{algorithm}{Algorithm}
+\newtheorem{remark}{Remark}
+\newenvironment{proof}{\begin{trivlist}
+\item[\hskip\labelsep{\it Proof.}]}{$\hfill\Box$\end{trivlist}}
+
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\To}{\rightarrow}
+\newcommand{\Ref}[1] {\textup{(\ref{#1})}}
+\newcommand{\satop}[2]{\stackrel{\scriptstyle{#1}}{\scriptstyle{#2}}}
+\newcommand{\sump}{\mathop{{\sum}'}}
+\newcommand{\bsDelta}{\boldsymbol{\Delta}}
+\newcommand{\bsa}{\boldsymbol{a}}
+\newcommand{\bszeta}{\boldsymbol{\zeta}}
+\newcommand{\bsgamma}{\boldsymbol{\gamma}}
+\newcommand{\bseta}{\boldsymbol{\eta}}
+\newcommand{\bsalpha}{\boldsymbol{\alpha}}
+\newcommand{\bslambda}{\boldsymbol{\lambda}}
+\newcommand{\bsnu}{\boldsymbol{\nu}}
+\newcommand{\bsmu}{\boldsymbol{\mu}}
+\newcommand{\bsk}{\boldsymbol{k}}
+\newcommand{\bsl}{\boldsymbol{l}}
+\newcommand{\bsv}{\boldsymbol{v}}
+\newcommand{\bsw}{\boldsymbol{w}}
+\newcommand{\bsb}{\boldsymbol{b}}
+\newcommand{\bsx}{\boldsymbol{x}}
+\newcommand{\bsh}{\boldsymbol{h}}
+\newcommand{\bsg}{\boldsymbol{g}}
+\newcommand{\bst}{\boldsymbol{t}}
+\newcommand{\bsz}{\boldsymbol{z}}
+\newcommand{\bsu}{\boldsymbol{u}}
+\newcommand{\bsq}{\boldsymbol{q}}
+\newcommand{\bsone}{\boldsymbol{1}}
+\newcommand{\tru}{{\rm tr}}
+\newcommand{\maxp}{\operatornamewithlimits{max\phantom{p}}}
+\newcommand{\infp}{\operatornamewithlimits{inf\phantom{p}}}
+\newcommand{\bsy}{\boldsymbol{y}}
+\newcommand{\bssigma}{\boldsymbol{\sigma}}
+\newcommand{\D}{{\cal D}}
+\newcommand{\E}{{\cal E}}
+\newcommand{\cP}{{\cal P}}
+\newcommand{\cG}{{\cal G}}
+\newcommand{\cQ}{{\cal Q}}
+\newcommand{\e}{{\varepsilon}}
+\newcommand{\wal}{{\rm wal}}
+\newcommand{\sob}{{\rm sob}}
+\newcommand{\dsh}{{\rm dsh}}
+\newcommand\setu{{\mathfrak{u}}}
+\newcommand{\uu}{\mathfrak{u}}
+\newcommand{\de}{{\rm e}}
+\newcommand{\swal}{{\rm wal}}
+\newcommand{\landau}{{\cal O}}
+\newcommand{\mc}{{\rm mc}}
+\newcommand{\icomp}{\mathtt{i}}
+\newcommand{\bszero}{\boldsymbol{0}}
+\newcommand{\rd}{\,\mathrm{d}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\integer}{\ZZ}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\GG}{\mathbb{G}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\LL}{\mathcal{L}_{\bsg}}
+\newcommand{\LLu}{\mathcal{L}_{\setu,\bsg}}
+\newcommand{\qed} {\hfill \Box \vspace{0.5cm}}
+\renewcommand{\pmod}[1]{\,(\bmod\,#1)}
+\newcommand{\ns}{\negthickspace\negthickspace}
+\newcommand{\nns}{\negthickspace\negthickspace\negthickspace\negthickspace}
+\newcommand{\MC}{{\rm MC}_{n,s}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\il}{\left<}
+\newcommand{\ir}{\right>}
+\def\qed{\hfill$\Box$}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\def\calV{{\cal V}}
+
+
+\DeclareMathOperator*{\esssup}{ess\,sup}
+
+\allowdisplaybreaks
+
+\newcommand{\TODO}[1]{{\color{red} Todo: #1}}
+
+
+\begin{document}
+
+\title{Lattices with net structure}
+
+\maketitle
+
+\section{General Idea}
+
+Let $b$ be a prime, $m\in\NN$, and let $N=b^m$. Let $\FF_b$ be the finite field with $b$ elements. We associate 
+the set $\{0,1,\ldots,b-1\}$ with the elements of $\FF_b$ in the obvious way.
+
+For an integer $k\in\{0,1,\ldots,b^m-1\}$ with $b$-adic expansion
+$$
+k=\kappa_0 +\kappa_1 b + \cdots + \kappa_{m-1} b^{m-1}
+$$
+and an $m\times m$-matrix $A$ over $\FF_b$, define a mapping 
+$$
+ \nu_A (k):= \eta_0 + \eta_1 b + \cdots + \eta_{m-1} b^{m-1},
+$$
+where the $\eta_i$ are obtained by 
+$$
+A \cdot (\kappa_0,\kappa_1,\ldots,\kappa_{m-1})^\top=(\eta_0,\eta_1,\ldots,\eta_{m-1})^\top,
+$$
+with the matrix-vector product computed over $\FF_b$. 
+
+\medskip
+
+We obtain a point set of $N=b^m$ points in $[0,1)^d$ in the following way.
+
+Let $C_1,\ldots,C_d$ be $d$ $m\times m$-matrices (the generating matrices) 
+over $\FF_b$. Furthermore, let $\bsg=(g_1,\ldots,g_d)\in\ZZ^d$ be a generating vector. We then define 
+points $\bsx_0,\bsx_1,\ldots,\bsx_{N-1}$ by
+$$
+ \bsx_k =\left(\left\{\frac{\nu_{C_1} (k) g_1}{N}\right\},\ldots,\left\{\frac{\nu_{C_d} (k) g_d}{N}\right\}\right)
+$$
+for $0\le k\le N-1$. Here, the terms 
+$$
+\frac{\nu_{C_j} (k) g_j}{N}
+$$
+are computed using normal integer arithmetic, and $\{\cdot\}$ denotes the fractional part. 
+
+
+\medskip
+
+\textbf{Special Cases:}
+
+\begin{itemize}
+\item If we choose $C_1,\ldots,C_d$ equal to the $m\times m$-identity matrix, we obtain a rank-1 lattice with $N$ points 
+and generating vector $\bsg$. 
+\item If we choose all $C_j$ equal to
+$$
+ \begin{pmatrix}
+  0 &0 & \cdots & 0 & 1\\
+  0 & 0&\cdots & 1 & 0\\
+  \hdots\\
+  0 & 1 & \cdots & 0 & 0 \\
+  1 & 0 & \cdots & 0 & 0 
+ \end{pmatrix},
+$$
+we obtain the first $N=b^m$ points of an extensible lattice point set in the sense of \cite{HH97}. 
+
+\item If we choose $g_1=\cdots=g_d=1$, we obtain a digital net. 
+
+\item If, for $1\le s< d$, we choose $g_1=\cdots=g_s=1$, $C_1,\ldots,C_s$ as the generating matrices of a digital net, 
+$C_{s+1},\ldots, C_d$ equal to the identity matrix, and $g_{s+1},\ldots,g_d$ like the components of a generating vector 
+of a $(d-s)$-dimensional rank-1 lattice point set, we obtain a hybrid point set in the sense of \cite{K12}. 
+\end{itemize}
+
+
+\medskip
+
+\textbf{Questions:}
+
+\begin{itemize}
+ \item Do the point sets in their general form have a group structure?
+ \item What is their quality with respect to common figures of merit?
+ \item Can we use this concept to obtain a form of ``higher order'' lattice rules (analogous to Dick's higher order polynomial lattice rules)? 
+ \item Can we make the definition above extensible in $N$ by using the generating matrices of digital sequences? 
+ \item \ldots.
+\end{itemize}
+
+
+\begin{thebibliography}{99}
+ \bibitem{HH97} F.J.~Hickernell, H.S.~Hong. Computing multivariate normal probabilities using rank-1 lattice sequences. 
+ In: \textit{Scientific Computing (Hong Kong, 1997)}, 209--215. Springer, Singapore, 1997.
+ 
+ \bibitem{K12} P.~Kritzer. On an example of finite mixed quasi-Monte Carlo point sets. Monatsh. Math. 168, 443--459, 2012. 
+\end{thebibliography}
+
+
+\end{document}
